@@ -1,0 +1,29 @@
+﻿@{
+    Layout = "~/Views/Shared/_AuthLayout.cshtml";
+}
+      
+        
+        <!-- BEGIN FORGOT PASSWORD FORM -->
+        <form action="@Url.Action("PostEmailVerification","Auth")" method="post">
+            <h3>Forget Password ?</h3>
+            <p> Enter your e-mail address below to reset your password. </p>
+            @if (ViewBag.message != "")
+            {
+                <div class="form-group">
+                    <p class="alert alert-danger" style="color: black;">@ViewBag.message</p>
+                </div>
+            }
+            <div class="form-group">
+                <div class="input-icon">
+                    <i class="fa fa-envelope"></i>
+                    <input class="form-control placeholder-no-fix" type="email" autocomplete="off" placeholder="Email" name="email" />
+                </div>
+            </div>
+            <div class="form-actions">
+                <a href="@Url.Action("Login", "Auth")" id="back-btn" class="btn red btn-outline">Back To Login</a>
+                <button type="submit" class="btn green pull-right"> Submit </button>
+            </div>
+        </form>
+        <!-- END FORGOT PASSWORD FORM -->       
+
+   

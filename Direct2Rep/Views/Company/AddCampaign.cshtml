@@ -1,0 +1,179 @@
+﻿
+@{
+    ViewBag.Title = "AddCampaign";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="page-content-wrapper">
+    <!-- BEGIN CONTENT BODY -->
+    <div class="page-content">
+        <!-- BEGIN PAGE HEAD-->
+        <div class="page-head">
+            <!-- BEGIN PAGE TITLE -->
+            <div class="page-title">
+                <h1>
+                    Dashboard
+                    <small>statistics, charts and reports</small>
+                </h1>
+            </div>
+            <!-- END PAGE TITLE -->
+        </div>
+        <!-- END PAGE HEAD-->
+        <!-- BEGIN PAGE BREADCRUMB -->
+        <ul class="page-breadcrumb breadcrumb">
+            <li>
+                <a href="@Url.Action("Index","Admin")">Home</a>
+                <i class="fa fa-circle"></i>
+            </li>
+            <li>
+                <span class="active">Add Campaign</span>
+            </li>
+        </ul>
+        <!-- END PAGE BREADCRUMB -->
+        <!-- BEGIN PAGE BASE CONTENT -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    @if (ViewBag.Message != "")
+                    {
+                        <div class="alert alert-success">
+                            @ViewBag.Message
+                        </div>
+                    }
+                    @if (ViewBag.Error != "")
+                    {
+                        <div class="alert alert-danger">
+                            @ViewBag.Error
+                        </div>
+                    }
+                </div>
+                <!-- BEGIN SAMPLE FORM PORTLET-->
+                <div class="portlet light bordered">
+                    <div class="portlet-title">
+                        <div class="caption font-green-haze">
+                            <i class="icon-home font-green-haze"></i>
+                            <span class="caption-subject bold uppercase"> Add New Campaign</span>
+                        </div>
+                        <div class="actions">
+
+                            <a class="btn btn-circle btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title=""> </a>
+                        </div>
+                    </div>
+                    <div class="portlet-body form">
+                        <form role="form" class="form-horizontal" action="@Url.Action("PostCampaign","Company")" method="post" enctype="multipart/form-data">
+                            <div class="form-body">
+
+                                <div class="form-group form-md-line-input">
+                                    <label class="col-md-2 control-label" for="form_control_1">Campaign Name</label>
+                                    <div class="col-md-10">
+                                        <input type="text" class="form-control" id="name" name="Name" onchange="ValidateName()" placeholder="Enter name" required>
+                                        <div class="form-control-focus"> </div>
+                                    </div>
+                                    <label class="col-md-offset-2 control-label" id="msg" style="color: cornflowerblue;"></label>
+
+                                </div>
+
+                                <div class="form-group form-md-line-input">
+                                    <label class="col-md-2 control-label" for="form_control_1"><button id="myBtn" class="btn btn-info btn-sm" onclick="GenerateUrl()" type="button">Generate Campaign Link</button></label>
+
+                                    <div class="col-md-10">
+                                            <input type="hidden" class="form-control" id="url1" name="Url">
+                                       <a id="url" href=""></a>
+                                            <div class="form-control-focus"> </div>                                       
+                                    </div>
+                                    <label class="col-md-offset-2 control-label" id="msg1" style="color: cornflowerblue;"></label>
+                                </div>
+
+                                <div class="form-actions">
+                                    <div class="row">
+                                        <div class="col-md-offset-2 col-md-10">
+                                            <button type="submit" class="btn blue">Done</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js"></script>
+<script>
+
+    function GenerateUrl() {
+        var name = document.getElementById('name').value;
+        $.ajax({
+            dataType: "json",
+            type: "GET",
+            url: '../Company/GenerateUrl',
+            data: { campaignname: name },
+            //traditional: true,
+            success: function (response) {
+
+                if (response == "")
+                {
+                    $("#msg").html("Url cannot be generated for this name of the campaign. Please enter another name.");
+                    $("#msg").addClass("text-danger");
+                    $(':input[type="submit"]').prop('disabled', true);
+                }
+                else
+                {
+                    $('#url1').val(response);
+                    $('#url').attr('href', response);
+                    $('#url').attr('target', '_blank');
+                    $('#url').html(response);
+                    $("#myBtn").prop("disabled", true);
+                }
+                
+            },
+            error: function (response) {
+                alert('Error');
+            }
+        });
+    }
+
+
+        function ValidateName() {
+        var campaignname = document.getElementById('name').value;
+        $.ajax({
+            dataType: "json",
+            type: "POST",
+            url: '../Company/validateCampaignName',
+            data: { Name: campaignname },
+            //traditional: true,
+            success: function (response) {
+                if (response == 0)
+                {
+                    $("#msg").html("Campaign having this name already exist. Please enter a new campaign name.");
+                    $("#msg").addClass("text-danger");
+                    $(':input[type="submit"]').prop('disabled', true);
+                    $("#myBtn").prop("disabled", true);
+                }
+                else if (response == 2)
+                {
+                    $("#msg").html("Please enter a new valid name.");
+                    $("#msg").addClass("text-danger");
+                    $(':input[type="submit"]').prop('disabled', true);
+                    $("#myBtn").prop("disabled", true);
+                }
+                else
+                {
+                    $("#msg").removeClass("text-danger");
+                    $("#msg").addClass("text-success");
+                    $("#msg").html("Campaign name is available.");
+                    $(':input[type="submit"]').prop('disabled', false);
+                    $("#myBtn").prop("disabled", false);
+                }
+            },
+            error: function (response) {
+                alert('Error');
+            }
+        });
+    }
+</script>
+

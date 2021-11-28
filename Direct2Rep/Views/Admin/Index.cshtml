@@ -1,0 +1,136 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@using Direct2Rep.Helping_Classes
+@{
+    SessionDTO sessiondto = new SessionDTO();
+}
+
+<div class="page-content-wrapper">
+    <!-- BEGIN CONTENT BODY -->
+    <div class="page-content">
+        <!-- BEGIN PAGE HEAD-->
+        <div class="page-head">
+            <!-- BEGIN PAGE TITLE -->
+            <div class="page-title">
+                <h1>
+                    Dashboard
+                    <small>statistics, charts and reports</small>
+                </h1>
+            </div>
+            <!-- END PAGE TITLE -->
+        </div>
+        <!-- END PAGE HEAD-->
+        <!-- BEGIN PAGE BREADCRUMB -->
+        <ul class="page-breadcrumb breadcrumb">
+            <li>
+                <a href="@Url.Action("Index","Admin")">Home</a>
+                <i class="fa fa-circle"></i>
+            </li>
+            <li>
+                <span class="active">Dashboard</span>
+            </li>
+        </ul>
+        <!-- END PAGE BREADCRUMB -->
+        
+        <!-- BEGIN PAGE BASE CONTENT -->
+        @if (sessiondto.getRole() == 1)
+        {
+            <div class="row">
+                <div class="col-md-offset-1 col-lg-offset-1 col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="dashboard-stat2 bordered">
+                        <div class="display">
+                            <div class="number">
+                                <h3 class="font-green-sharp">
+                                    <span >@ViewBag.companies</span>
+                                    <small class="font-green-sharp"></small>
+                                </h3>
+                                <small>TOTAL COMPANIES</small>
+                            </div>
+                            <div class="icon">
+                                <i class="icon-home"></i>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="dashboard-stat2 bordered">
+                        <div class="display">
+                            <div class="number">
+                                <h3 class="font-red-haze">
+                                    <span>@ViewBag.salesreps</span>
+                                </h3>
+                                <small>TOTAL SALES REPRESENTATIVES</small>
+                            </div>
+                            <div class="icon">
+                                <i class="icon-user"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="dashboard-stat2 bordered">
+                        <div class="display">
+                            <div class="number">
+                                <h3 class="font-blue-sharp">
+                                    <span>@ViewBag.visitors</span>
+                                </h3>
+                                <small>TOTAL VISITORS</small>
+                            </div>
+                            <div class="icon">
+                                <i class="icon-user"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }       
+
+        @if (sessiondto.getRole() == 10)
+        {
+            <div class="row">
+                <div class="col-md-offset-3 col-lg-offset-3 col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="dashboard-stat2 bordered">
+                        <div class="display">
+                            <div class="number">
+                                <h3 class="font-green-sharp">
+                                    <span>@ViewBag.campaigns</span>
+                                    <small class="font-green-sharp"></small>
+                                </h3>
+                                <small>TOTAL CAMPAIGNS</small>
+                            </div>
+                            <div class="icon">
+                                <i class="icon-home"></i>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="dashboard-stat2 bordered">
+                        <div class="display">
+                            <div class="number">
+                                <h3 class="font-red-haze">
+                                    <span>@ViewBag.salesreps</span>
+                                </h3>
+                                <small>TOTAL SALES REPRESENTATIVES</small>
+                            </div>
+                            <div class="icon">
+                                <i class="icon-user"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>                
+            </div>
+        }
+
+        <!-- END PAGE BASE CONTENT -->
+    </div>
+    <!-- END CONTENT BODY! -->
+</div>
+
+
+

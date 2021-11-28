@@ -1,0 +1,216 @@
+﻿
+@{
+    ViewBag.Title = "AddCompany";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="page-content-wrapper">
+    <!-- BEGIN CONTENT BODY -->
+    <div class="page-content">
+        <!-- BEGIN PAGE HEAD-->
+        <div class="page-head">
+            <!-- BEGIN PAGE TITLE -->
+            <div class="page-title">
+                <h1>
+                    Dashboard
+                    <small>statistics, charts and reports</small>
+                </h1>
+            </div>
+            <!-- END PAGE TITLE -->
+        </div>
+        <!-- END PAGE HEAD-->
+        <!-- BEGIN PAGE BREADCRUMB -->
+        <ul class="page-breadcrumb breadcrumb">
+            <li>
+                <a href="@Url.Action("Index","Admin")">Home</a>
+                <i class="fa fa-circle"></i>
+            </li>
+            <li>
+                <span class="active">Add Company</span>
+            </li>
+        </ul>
+        <!-- END PAGE BREADCRUMB -->
+        <!-- BEGIN PAGE BASE CONTENT -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    @if (ViewBag.Message != "")
+                    {
+                        <div class="alert alert-success">
+                            @ViewBag.Message
+                        </div>
+                    }
+                    @if (ViewBag.Error != "")
+                    {
+                        <div class="alert alert-danger">
+                            @ViewBag.Error
+                        </div>
+                    }
+                </div>
+                <!-- BEGIN SAMPLE FORM PORTLET-->
+                <div class="portlet light bordered">
+                    <div class="portlet-title">
+                        <div class="caption font-green-haze">
+                            <i class="icon-home font-green-haze"></i>
+                            <span class="caption-subject bold uppercase"> Add New Company</span>
+                        </div>
+                        <div class="actions">
+
+                            <a class="btn btn-circle btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title=""> </a>
+                        </div>
+                    </div>
+                    <div class="portlet-body form">
+                        <form role="form" class="form-horizontal" action="@Url.Action("PostCompany","Admin")" method="post" enctype="multipart/form-data">
+                            <div class="form-body">
+                               
+                                <div class="form-group form-md-line-input">
+                                    <label class="col-md-2 control-label" for="form_control_1">Company/Organization Name</label>
+                                    <div class="col-md-10">
+                                        <input type="text" class="form-control" onkeydown="return trim(this)" onchange="ValidateName()" id="name"  name="Name" placeholder="Enter name" required>
+                                        <div class="form-control-focus"> </div>                                        
+                                    </div>
+                                    <label class="col-md-offset-2 control-label" id="msg" style="color: cornflowerblue;"></label>
+                                </div>
+                                <div class="form-group form-md-line-input">
+                                    <label class="col-md-2 control-label" for="form_control_1">Website</label>
+                                    <div class="col-md-10">
+                                        <input type="text" name="Website" class="form-control" id="form_control_1" placeholder="Enter website" required>
+                                        <div class="form-control-focus"> </div>
+                                    </div>
+                                </div>
+                                <div class="form-group form-md-line-input">
+                                    <label class="col-md-2 control-label" for="form_control_1">Phone</label>
+                                    <div class="col-md-10">
+                                        <input type="text" name="Phone" class="form-control" id="form_control_1" placeholder="Enter phone" required>
+                                        <div class="form-control-focus"> </div>
+                                    </div>
+                                </div>
+                                <div class="form-group form-md-line-input">
+                                    <label class="col-md-2 control-label" for="form_control_1">Email</label>
+                                    <div class="col-md-10">
+                                        <input type="email" name="Email" class="form-control" id="form_control_1" placeholder="Enter email" required>
+                                        <div class="form-control-focus"> </div>
+                                    </div>
+                                </div>
+                                <div class="form-group form-md-line-input">
+                                    <label class="col-md-2 control-label" for="form_control_1">Password</label>
+                                    <div class="col-md-10">
+                                        <span id="password_strength"></span>
+                                        <input type="password" name="Password" class="form-control" id="form_control_1" placeholder="Enter password" onkeyup="CheckPasswordStrength(this.value)" required>
+                                        <div class="form-control-focus"> </div>
+                                        
+                                    </div>
+                                </div>
+                                <div class="form-group form-md-line-input">
+                                    <label class="col-md-2 control-label" for="form_control_1">Upload Logo (600x600px max)</label>
+                                    <div class="col-md-10">
+                                        <input type="file" name="Logo" class="form-control" id="form_control_1" required>
+                                        <div class="form-control-focus"> </div>
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <div class="row">
+                                        <div class="col-md-offset-2 col-md-10">
+                                            <button type="submit" class="btn blue">Submit</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js"></script>
+<script>
+
+    function ValidateName() {
+        var name = document.getElementById('name').value;
+        $.ajax({
+            dataType: "json",
+            type: "POST",
+            url: '../Admin/validateCompanyName',
+            data: { Name: name },
+            //traditional: true,
+            success: function (response) {
+                if (response == 0) {
+                    $("#msg").html("Company already exist. Please search for the company record or enter a new company.");
+                    $("#msg").addClass("text-danger");
+                    $(':input[type="submit"]').prop('disabled', true);
+                } else {
+                    $("#msg").removeClass("text-danger");
+                    $("#msg").addClass("text-success");
+                    $("#msg").html(" Name is available.");
+                    $(':input[type="submit"]').prop('disabled', false);
+                    return trim(this);
+                }
+            },
+            error: function (response) { alert('Error'); }
+
+        });
+    }
+</script>
+
+<script type="text/javascript">
+    function CheckPasswordStrength(password) {
+        var password_strength = document.getElementById("password_strength");
+
+        //TextBox left blank.
+        if (password.length == 0) {
+            password_strength.innerHTML = "";
+            return;
+        }
+
+        //Regular Expressions.
+        var regex = new Array();
+        regex.push("[A-Z]"); 
+        regex.push("[a-z]");
+        regex.push("[0-9]"); 
+        regex.push("[$!%*#?&]");
+
+        var passed = 0;
+
+        //Validate for each Regular Expression.
+        for (var i = 0; i < regex.length; i++) {
+            if (new RegExp(regex[i]).test(password)) {
+                passed++;
+            }
+        }
+
+        //Validate for length of Password.
+        if (passed > 2 && password.length > 8) {
+            passed++;
+        }
+
+        //Display status.
+        var color = "";
+        var strength = "";
+        switch (passed) {
+            case 0:
+            case 1:
+                strength = "Weak";
+                color = "red";
+                break;
+            case 2:
+                strength = "Good";
+                color = "darkorange";
+                break;
+            case 3:
+            case 4:
+                strength = "Strong";
+                color = "green";
+                break;
+            case 5:
+                strength = "Very Strong";
+                color = "darkgreen";
+                break;
+        }
+        password_strength.innerHTML = strength;
+        password_strength.style.color = color;
+    }
+</script>

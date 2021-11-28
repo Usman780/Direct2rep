@@ -1,0 +1,110 @@
+﻿@{
+    ViewBag.Title = "AssignRepToCompany";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@using Direct2Rep.Models;
+<div class="page-content-wrapper">
+    <!-- BEGIN CONTENT BODY -->
+    <div class="page-content">
+        <!-- BEGIN PAGE HEAD-->
+        <div class="page-head">
+            <!-- BEGIN PAGE TITLE -->
+            <div class="page-title">
+                <h1>
+                    Dashboard
+                    <small>statistics, charts and reports</small>
+                </h1>
+            </div>
+            <!-- END PAGE TITLE -->
+        </div>
+        <!-- END PAGE HEAD-->
+        <!-- BEGIN PAGE BREADCRUMB -->
+        <ul class="page-breadcrumb breadcrumb">
+            <li>
+                <a href="@Url.Action("Index","Admin")">Home</a>
+                <i class="fa fa-circle"></i>
+            </li>
+            <li>
+                <span class="active">Sales Reps & Companies</span>
+            </li>
+        </ul>
+        <!-- END PAGE BREADCRUMB -->
+        <!-- BEGIN PAGE BASE CONTENT -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    @if (ViewBag.Message != "")
+                    {
+                        <div class="alert alert-success">
+                            @ViewBag.Message
+                        </div>
+                    }
+                    @if (ViewBag.Error != "")
+                    {
+                        <div class="alert alert-danger">
+                            @ViewBag.Error
+                        </div>
+                    }
+                </div>
+                <!-- BEGIN SAMPLE FORM PORTLET-->
+                <div class="portlet light bordered">
+                    <div class="portlet-title">
+                        <div class="caption font-green-haze">
+                            <i class="icon-home font-green-haze"></i>
+                            <span class="caption-subject bold uppercase"> Sales Reps & Companies</span>
+                        </div>
+                        <div class="actions">
+
+                            <a class="btn btn-circle btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title=""> </a>
+                        </div>
+                    </div>
+                    <div class="portlet-body form">
+                        <form role="form" class="form-horizontal" action="@Url.Action("AssignRepToCompany","Admin")" method="post">
+                            <div class="form-body">
+                                <div class="form-group form-md-line-input">
+                                    <label class="col-md-2 control-label" for="form_control_1">Companies</label>
+                                    <div class="col-md-10">
+                                        <select class="bs-select form-control" name="CompanyId">
+                                            <option value="">Select One....</option>
+                                            @foreach (Company c in ViewBag.companies)
+                                            {
+                                                <option value="@c.Id">@c.Name</option>
+                                            }
+                                        </select>
+                                        <div class="form-control-focus"> </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group form-md-line-input">
+                                    <label class="col-md-2 control-label" for="form_control_1">Sales Representatives</label>
+                                    <div class="col-md-10">
+                                        <select class="bs-select form-control" name="SaleRepId">
+                                            <option value="">Select One....</option>
+                                            @foreach (SaleRepresentative s in ViewBag.salereps)
+                                            {
+                                                <option value="@s.Id">@s.Name</option>
+                                            }
+                                        </select>
+                                        <div class="form-control-focus"> </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-actions">
+                                    <div class="row">
+                                        <div class="col-md-offset-2 col-md-10">
+                                            <button type="submit" class="btn blue">Assign</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

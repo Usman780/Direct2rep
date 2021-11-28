@@ -1,0 +1,299 @@
+﻿
+@{
+    ViewBag.Title = "UpdateSaleRep";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@using Direct2Rep.BL
+@model Direct2Rep.Models.Company_SaleRep
+@using Direct2Rep.Models
+<style>
+    .multiselect-container > li > a > label.radio, .multiselect-container > li > a > label.checkbox {
+        margin: 0;
+        padding: 10px;
+        height: 10px !important;
+    }
+
+    .multiselect-container {
+        height: 500px;
+        overflow-y: scroll;
+    }
+</style>
+<div class="page-content-wrapper">
+    <!-- BEGIN CONTENT BODY -->
+    <div class="page-content">
+        <!-- BEGIN PAGE HEAD-->
+        <div class="page-head">
+            <!-- BEGIN PAGE TITLE -->
+            <div class="page-title">
+                <h1>
+                    Dashboard
+                    <small>statistics, charts and reports</small>
+                </h1>
+            </div>
+            <!-- END PAGE TITLE -->
+        </div>
+        <!-- END PAGE HEAD-->
+        <!-- BEGIN PAGE BREADCRUMB -->
+        <ul class="page-breadcrumb breadcrumb">
+            <li>
+                <a href="@Url.Action("Index","Admin")">Home</a>
+                <i class="fa fa-circle"></i>
+            </li>
+            <li>
+                <span class="active">Update Sales Rep</span>
+            </li>
+        </ul>
+        <!-- END PAGE BREADCRUMB -->
+        <!-- BEGIN PAGE BASE CONTENT -->
+        <div class="row">
+            <div class="col-md-12">
+                <!-- BEGIN SAMPLE FORM PORTLET-->
+                <div class="portlet light bordered">
+                    <div class="portlet-title">
+                        <div class="caption font-green-haze">
+                            <i class="icon-home font-green-haze"></i>
+                            <span class="caption-subject bold uppercase"> Update Sales Representative</span>
+                        </div>
+                        <div class="actions">
+
+                            <a class="btn btn-circle btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title=""> </a>
+                        </div>
+                    </div>
+                    <div class="portlet-body form">
+                        <div class="row">
+                            @if (ViewBag.Message != null)
+                            {
+                                <div class="alert alert-success">
+                                    @ViewBag.Message
+                                </div>
+                            }
+                            @if (ViewBag.Error != null)
+                            {
+                                <div class="alert alert-danger">
+                                    @ViewBag.Error
+                                </div>
+                            }
+                        </div>
+                        <form role="form" class="form-horizontal" action="@Url.Action("UpdateSaleRep","Company")" method="post" enctype="multipart/form-data">
+                            <div class="form-body">
+                                <input type="hidden" name="Id" value="@ViewBag.SaleRep.SaleRepresentative.Id" />
+                                <div class="form-group form-md-line-input">
+                                    <label class="col-md-2 control-label" for="form_control_1">Name</label>
+                                    <div class="col-md-10">
+                                        <input type="text" name="Name" class="form-control" id="form_control_1" value="@ViewBag.SaleRep.SaleRepresentative.Name" required>
+                                        <div class="form-control-focus"> </div>
+                                    </div>
+                                </div>
+                                <div class="form-group form-md-line-input">
+                                    <label class="col-md-2 control-label" for="form_control_1">Sales Firm Name</label>
+                                    <div class="col-md-10">
+                                        <input type="text" name="SalesFirmName" class="form-control" id="form_control_1" value="@ViewBag.SaleRep.SaleRepresentative.SalesFirmName" required>
+                                        <div class="form-control-focus"> </div>
+                                    </div>
+                                </div>
+                                <div class="form-group form-md-line-input">
+                                    <label class="col-md-2 control-label" for="form_control_1">Email</label>
+                                    <div class="col-md-10">
+                                        <input type="email" name="Email" class="form-control" id="form_control_1" value="@ViewBag.SaleRep.SaleRepresentative.Email" required>
+                                        <div class="form-control-focus"> </div>
+                                    </div>
+                                </div>
+                                <div class="form-group form-md-line-input">
+                                    <label class="col-md-2 control-label" for="form_control_1">Previous Selected States</label>
+                                    <div class='col-md-10'>
+                                        <div class="portlet-body">
+                                            @{
+                                                //List<RepStatePart> rs = new AdminBL().getRepStatePartList().Where(y => y.SaleRepId == Model.SaleRepId).ToList();
+                                                List<RepStatePart> rs = new AdminBL().getRepStatePartList().Where(y => y.SaleRepId == ViewBag.SaleRep.SaleRepresentative.Id).ToList();
+                                            }
+                                            <p>
+                                                @foreach (RepStatePart s in rs)
+                                                {
+
+                                                    if (s == rs.LastOrDefault())
+                                                    {
+                                                        //<span><a href="@Url.Action("DeleteRepState", "Company", new { Id = s.Id, companysalerep = Model.Id })"><i class="icon-close"></i></a>@s.State.Name</span>
+                                                        <span><a href="@Url.Action("DeleteRepState", "Company", new { Id = s.Id, companysalerep = ViewBag.SaleRep.Id })"><i class="icon-close"></i></a>@s.State.Name</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        //<span><a href="@Url.Action("DeleteRepState", "Company", new { Id = s.Id, companysalerep = Model.Id })"><i class="icon-close"></i></a>@s.State.Name,</span>
+                                                        <span><a href="@Url.Action("DeleteRepState", "Company", new { Id = s.Id, companysalerep = ViewBag.SaleRep.Id })"><i class="icon-close"></i></a>@s.State.Name,</span>
+                                                    }
+                                                }
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <input type="hidden" id="room" name="count" value=1 />
+                                <div id="education_fields">
+                                    <div class="row" id="selectstate0">
+                                        <div class="form-group form-md-line-input">
+                                            <label class="col-md-2 control-label" for="form_control_1">State Covered</label>
+                                            <div class='col-md-8' id="states">
+                                                <div class="portlet-body">
+                                                    <select class="bs-select form-control" name="StateCover" required>
+                                                        <option>Choose a state</option>
+                                                        @foreach (var x in ViewBag.CoveredStates)
+                                                        {
+                                                            <option value="@x.Id">@x.Name</option>
+                                                        }
+                                                        @*@for (int i = 1; i < ViewBag.statescount; i = i + 6)
+                                                        {
+                                                            State s = new AdminBL().getStateById(i);
+                                                            if (s != null)
+                                                            {
+                                                                string[] strArr = null;
+                                                                string str = s.Name;
+                                                                char[] splitchar = { '(' };
+                                                                strArr = str.Split(splitchar);
+                                                                <option value="@s.Id"> @strArr[0] </option>
+                                                            }
+                                                        }*@
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class='col-md-2'>
+                                                <div class="portlet-body">
+                                                    <button id="addTimeCard" onclick="education_fields();" type="button" class="btn btn-success btn-number" data-type="plus" data-field="quant[2]">
+
+                                                        <span class="glyphicon glyphicon-plus"></span>
+                                                    </button>
+                                                    @*<button type="button" class="btn btn-danger btn-number" onclick="remove_education_fields('selectstate0')" data-type="minus" data-field="quant[2]">
+                                                            <span class="glyphicon glyphicon-minus"></span>
+                                                        </button>*@
+                                                </div>
+                                            </div>
+                                            @*<div class="col-md-offset-2 col-md-8">
+                                                <div class="md-checkbox-inline">
+                                                    <div class="md-checkbox">
+                                                        <input type="checkbox" id="checkbox0_1" name="PartofState0_1" value="All" class="md-check">
+                                                        <label for="checkbox0_1">
+                                                            <span></span>
+                                                            <span class="check"></span>
+                                                            <span class="box"></span> All
+                                                        </label>
+                                                    </div>
+                                                    <div class="md-checkbox">
+                                                        <input type="checkbox" id="checkbox0_2" name="PartofState0_2" value="East" class="md-check">
+                                                        <label for="checkbox0_2">
+                                                            <span></span>
+                                                            <span class="check"></span>
+                                                            <span class="box"></span> East
+                                                        </label>
+                                                    </div>
+                                                    <div class="md-checkbox">
+                                                        <input type="checkbox" id="checkbox0_3" name="PartofState0_3" value="West" class="md-check">
+                                                        <label for="checkbox0_3">
+                                                            <span></span>
+                                                            <span class="check"></span>
+                                                            <span class="box"></span> West
+                                                        </label>
+                                                    </div>
+                                                    <div class="md-checkbox">
+                                                        <input type="checkbox" id="checkbox0_4" name="PartofState0_4" value="North" class="md-check">
+                                                        <label for="checkbox0_4">
+                                                            <span></span>
+                                                            <span class="check"></span>
+                                                            <span class="box"></span> North
+                                                        </label>
+                                                    </div>
+                                                    <div class="md-checkbox">
+                                                        <input type="checkbox" id="checkbox0_5" name="PartofState0_5" value="South" class="md-check">
+                                                        <label for="checkbox0_5">
+                                                            <span></span>
+                                                            <span class="check"></span>
+                                                            <span class="box"></span> South
+                                                        </label>
+                                                    </div>
+                                                    <div class="md-checkbox">
+                                                        <input type="checkbox" id="checkbox0_6" name="PartofState0_6" value="Metro" class="md-check">
+                                                        <label for="checkbox0_6">
+                                                            <span></span>
+                                                            <span class="check"></span>
+                                                            <span class="box"></span> Metro
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>abc*@
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group form-md-line-input">
+                                    <label class="col-md-2 control-label" for="form_control_1">Email To Receive Leads</label>
+                                    <div class="col-md-10">
+                                        <input type="email" name="EmailReceiveLeads" class="form-control" id="form_control_1" value="@ViewBag.SaleRep.SaleRepresentative.EmailReceiveLeads" required>
+                                        <div class="form-control-focus"> </div>
+                                    </div>
+                                </div>
+                                <div class="form-group form-md-line-input">
+                                    <label class="col-md-2 control-label" for="form_control_1">Upload Headshot (200*200px)</label>
+                                    <div class="col-md-10">
+                                        <input type="file" name="PictureUpload" class="form-control" id="form_control_1">
+                                        <div class="form-control-focus"> </div>
+                                    </div>
+                                </div>
+                                <div class="form-group form-md-line-input">
+                                    <label class="col-md-2 control-label" for="form_control_1">Upload Logo (150*150px)</label>
+                                    <div class="col-md-10">
+                                        <input type="file" name="LogoUpload" class="form-control" id="form_control_1">
+                                        <div class="form-control-focus"> </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-actions">
+                                    <div class="row">
+                                        <div class="col-md-offset-2 col-md-10">
+                                            <button type="submit" class="btn blue">Update</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script type="text/javascript">
+    var room = 1;
+
+    function education_fields() {
+
+        var objTo = document.getElementById('education_fields');
+        var divtest = document.createElement("div");
+        divtest.setAttribute("class", "row");
+        divtest.setAttribute("id", "selectstate" + room);
+        var states = '<div class="form-group form-md-line-input" ><label class="col-md-2 control-label" for="form_control_1">State Covered</label><div class="col-md-8" id="states"><div class="portlet-body"><select class="bs-select form-control" name= "StateCover' + room +'" required>';
+        var alloptions = document.getElementById('states').innerHTML;
+        var salloptions = alloptions.split('required="">');
+        salloptions = salloptions[1].split("</select>")
+        var states = states + salloptions[0];
+
+        states =  states + "</select> </div>";
+        var selectstateid = 'selectstate' + room;
+        var click = 'onclick = remove_education_fields("' + selectstateid + '");';
+        states = states + '</div><div class="col-md-2"><div class="portlet-body" ><button id="addTimeCard" onclick="education_fields();" type="button" class="btn btn-success btn-number" data-type="plus" data-field="quant[2]"><span class="glyphicon glyphicon-plus"></span></button>';
+        states = states + '<button type= "button" class="btn btn-danger btn-number" ' + click + ' data-type="minus" data-field="quant[2]"><span class="glyphicon glyphicon-minus"></span></button></div></div>'; //<div class="col-md-offset-2 col-md-8"><div class="md-checkbox-inline"><div class="md-checkbox"><input type="checkbox" id="checkbox' + room + '_1" name="PartofState' + room + '_1" value="All" class="md-check"><label for="checkbox' + room + '_1"><span></span><span class="check"></span><span class="box"></span> All</label></div><div class="md-checkbox"><input type="checkbox" id="checkbox' + room + '_2" name="PartofState' + room + '_2" value="East" class="md-check"><label for="checkbox' + room + '_2"><span></span><span class="check"></span><span class="box"></span> East</label> </div><div class="md-checkbox"><input type="checkbox" id="checkbox' + room + '_3" name="PartofState' + room + '_3" value="West" class="md-check"><label for="checkbox' + room + '_3"><span></span><span class="check"></span><span class="box"></span> West</label> </div><div class="md-checkbox"><input type="checkbox" id="checkbox' + room + '_4" name="PartofState' + room + '_4" value="North" class="md-check"><label for="checkbox' + room + '_4"><span></span><span class="check"></span><span class="box"></span> North</label></div><div class="md-checkbox"> <input type="checkbox" id="checkbox' + room + '_5" name="PartofState' + room + '_5" value="South" class="md-check"><label for="checkbox' + room + '_5"><span></span><span class="check"></span><span class="box"></span> South</label></div><div class="md-checkbox"><input type="checkbox" id="checkbox' + room + '_6" name="PartofState' + room + '_6" value="All" class="md-check"><label for="checkbox' + room + '_6"><span></span><span class="check"></span><span class="box"></span> Metro</label></div></div></div></div></div></div>';
+        divtest.innerHTML = states;
+        objTo.appendChild(divtest);
+
+        document.getElementById('room').value = room;
+
+        room++;
+    }
+
+
+    function remove_education_fields(rid) {
+        $('#'+rid).remove();
+    }
+</script>

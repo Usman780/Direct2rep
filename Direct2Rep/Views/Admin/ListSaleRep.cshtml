@@ -1,0 +1,264 @@
+﻿
+@{
+    ViewBag.Title = "ListSaleRep";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@model List<Direct2Rep.Models.SaleRepresentative>
+@using Direct2Rep.Models
+@using Direct2Rep.BL
+
+
+
+<div class="modal fade" id="deleteSaleRepModals" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <form action="@Url.Action("DeleteSaleRep","Admin")" method="post">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="exampleModalLabel">Delete</h4>
+                </div>
+                <div class="modal-body">
+                    <p>You are going to delete this Sales Representative. Are you sure?</p>
+                    <input type="hidden" class="form-control" id="propId" name="Id" required>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                        <button type="submit" class="btn btn-primary">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+
+
+
+<div class="page-content-wrapper">
+    <!-- BEGIN CONTENT BODY -->
+    <div class="page-content">
+        <!-- BEGIN PAGE HEAD-->
+        <div class="page-head">
+            <!-- BEGIN PAGE TITLE -->
+            <div class="page-title">
+                <h1>
+                    Dashboard
+                    <small>statistics, charts and reports</small>
+                </h1>
+            </div>
+            <!-- END PAGE TITLE -->
+        </div>
+        <!-- END PAGE HEAD-->
+        <!-- BEGIN PAGE BREADCRUMB -->
+        <ul class="page-breadcrumb breadcrumb">
+            <li>
+                <a href="@Url.Action("Index","Admin")">Home</a>
+                <i class="fa fa-circle"></i>
+            </li>
+            <li>
+                <span class="active">Sales Representatives</span>
+            </li>
+        </ul>
+        <!-- END PAGE BREADCRUMB -->
+        <!-- BEGIN PAGE BASE CONTENT -->
+        <div class="row">
+            <div class="col-md-12">
+                <!-- BEGIN EXAMPLE TABLE PORTLET-->
+                <div class="portlet light bordered">
+                    <div class="portlet-title">
+                        <div class="caption font-dark">
+                            <i class=" font-dark"></i>
+                            <span class="caption-subject bold uppercase">List of Sales Representatives</span>
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <table class="table table-striped table-bordered table-hover" id="sample_1">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Sales Firm Name</th>
+                                    @*<th>Company</th>*@
+                                    <th>Email</th>
+                                    <th>State Covered</th>
+                                    <th>Email Receive Leads</th>
+                                    <th>Images</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if(ViewBag.salerep == null)
+                                {
+                                    <tr>
+                                        <td colspan="7" class="text-center">No Data Found</td>
+                                    </tr>
+                                }
+                                else
+                                { 
+                                    foreach (var item in ViewBag.salerep)
+                                    {
+                                        <tr>
+                                            <td>@item.Name</td>
+                                            <td>@item.SalesFirmName</td>
+                                            @*<td>@item.CompanyName</td>*@
+                                            <td>@item.Email</td>
+                                            @{ 
+                                                List<RepStatePart> rs = new AdminBL().getRepStatePartList().Where(y => y.SaleRepId == item.Id).ToList();
+                                            }
+                                            <td>
+                                                @foreach (RepStatePart s in rs)
+                                                {                                              
+
+                                                    if (s == rs.LastOrDefault())
+                                                    {
+                                                        <span>@s.State.Name</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>@s.State.Name, </span>
+                                                    }
+                                                }
+                                            </td>
+                                            <td> @item.EmailReceiveLeads</td>
+                                            @if (item.PictureUpload == null && item.LogoUpload == null)
+                                            {
+                                                <td>No Image Uploaded</td>
+                                            }
+                                            else if (item.PictureUpload == null && item.LogoUpload != null)
+                                            {
+                                                <td>
+                                                    @*<img src="@Url.Content(item.LogoUpload)" height="150" width="150" class="img-responsive underlay">*@
+                                                    <a href="@Url.Content(item.LogoUpload)" target="_blank">Logo</a>
+                                            </td>
+                                            }
+                                            else if (item.PictureUpload != null && item.LogoUpload == null)
+                                            {
+                                                <td>
+                                            @*<img src="@Url.Content(item.PictureUpload)" height="200" width="200" class="img-responsive underlay">*@
+                                                    <a href="@Url.Content(item.PictureUpload)" target="_blank">Picture</a>
+                                                </td>
+                                            }
+                                            else
+                                            {
+                                                <td>
+                                                    @*<img src="@Url.Content(item.SaleRepresentative.PictureUpload)" height="200" width="200" class="img-responsive underlay">*@
+
+                                                    <a href="@Url.Content(item.PictureUpload)" target="_blank">Picture</a> / <a href="@Url.Content(item.LogoUpload)" target="_blank">Logo</a>
+                                                </td>
+                                            }
+                                            <td>
+                                                <a class="btn btn-info" href="@Url.Action("UpdateSaleRep","Admin",new { Id=item.Id})">
+                                                      EDIT
+                                                </a>                                         
+
+                                                <a class="btn btn-danger" data-target="#deleteSaleRepModal" data-toggle="modal" onclick="deleteSaleRep('@item.Id')">
+                                                    DELETE
+                                                </a>
+
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- END EXAMPLE TABLE PORTLET-->
+            </div>
+        </div>
+        <!-- END PAGE BASE CONTENT -->
+    </div>
+    <!-- END CONTENT BODY -->
+</div>
+
+
+
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+
+
+@*<script>
+    $(document).ready(function () {
+
+        var table = $('#listSaleRep');
+
+        var oTable = table.dataTable({
+
+             "ajax": {
+                    "url": '@Url.Action("getListSaleRep", "Admin")',
+                    "type": "GET",
+                    "datatype": "json"
+                },
+                "columns": [
+                    { "data": "SalesRepNam", "name": "SalesRepNam" },
+                    { "data": "SalesRepFirmName", "name": "SalesRepFirmName" },
+                    { "data": "CompanyName", "name": "CompanyName" },
+                    { "data": "SalesRepEmail", "name": "SalesRepEmail" },
+                    { "data": "SalesRepEmailReceiveLeads", "name": "SalesRepEmailReceiveLeads" },
+                    { "data": "SalesRepLogoUpload", "name": "SalesRepLogoUpload" },
+                    { "data": "Id", "name": "Id" }
+                ],
+                'columnDefs': [
+                    {
+                        render: function (data, type, full, meta) {
+                            return ' <a class="btn btn-sm  bg-primary" href="../Admin/UpdateSaleRep?Id=' + full.Id + '">Update</a>' +
+                                ' <button class="btn btn-sm  btn-danger" data-target="#deleteSaleRepModal" data-toggle="modal" onclick="deleteSaleRep(' + full.Id + ')"> Delete </button>';
+                        },
+                        targets: 6
+                    }
+                ],
+                "serverSide": "true",
+                "processing": "true",
+
+            "language": {
+                "aria": {
+                    "sortAscending": ": activate to sort column ascending",
+                    "sortDescending": ": activate to sort column descending"
+                },
+                "emptyTable": "No data available in table",
+                "info": "Showing _START_ to _END_ of _TOTAL_ entries",
+                "infoEmpty": "No entries found",
+                "infoFiltered": "(filtered1 from _MAX_ total entries)",
+                "lengthMenu": "_MENU_ entries",
+                "search": "Search:",
+                "zeroRecords": "No matching records found"
+            },
+
+
+
+            buttons: [
+                { extend: 'copy', className: 'btn red btn-outline', exportOptions: { columns: ':not(:last-child)' } },
+                { extend: 'excel', className: 'btn yellow btn-outline ', exportOptions: { columns: ':not(:last-child)' } },
+                { extend: 'csv', className: 'btn purple btn-outline ', exportOptions: { columns: ':not(:last-child)' } },
+                { extend: 'colvis', className: 'btn dark btn-outline', text: 'Columns ON / OFF' }
+            ],
+
+            responsive: true,
+
+            "order": [
+                [0, 'asc']
+            ],
+
+            "lengthMenu": [
+                [5, 10, 15, 20, -1],
+                [5, 10, 15, 20, "All"]
+            ],
+            "pageLength": 10,
+
+            "dom": "<'row' <'col-md-12'B>><'row'<'col-md-6 col-sm-12'l><'col-md-6 col-sm-12'f>r><'table-scrollable't><'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12'p>>",
+        });
+    });
+</script>*@
+
+
+
+
+<script>
+    function deleteSaleRep(Id) {
+        $('#propId').val(Id);
+        $('#deleteSaleRepModals').modal('show');
+    }
+
+</script>
+

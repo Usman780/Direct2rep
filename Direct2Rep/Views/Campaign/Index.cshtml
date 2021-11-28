@@ -1,0 +1,346 @@
+﻿
+@{
+    ViewBag.Title = "Company Form";
+    Layout = "~/Views/Shared/_CompanyLayout.cshtml";
+}
+@using Direct2Rep.BL
+@using Direct2Rep.Models
+<style>
+    .multiselect-container > li > a > label.radio, .multiselect-container > li > a > label.checkbox {
+        margin: 0;
+        padding: 10px;
+        height: 10px !important;
+    }
+
+    .multiselect-container {
+        height: 400px;
+        overflow-y: scroll;
+    }
+</style>
+<script src='https://www.google.com/recaptcha/api.js'></script>
+
+<div class="row">
+    @if (ViewBag.company.Logo != null)
+    {
+        <center>
+            <img class="responsive" src="@Url.Content(ViewBag.company.Logo)" alt="No Logo" style="height:75px; width:75px;" />
+        </center><br />
+    }
+</div>
+<br />
+<div class="row">
+    <div class="col-md-offset-3 col-md-6">
+        <div class="alert alert-info">
+            Thank you for your interest! Please add your contact information below and your direct sales representative will respond as soon as possible.
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-offset-3 col-md-6">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption font-red-sunglo">
+                        <span class="caption-subject bold"> @ViewBag.campaign.Name</span>
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <div class="row">
+                    @if (ViewBag.Message != "")
+                    {
+                        <div class="alert alert-success">
+                            @ViewBag.Message
+                        </div>
+                    }
+                    @if (ViewBag.Error != "")
+                    {
+                        <div class="alert alert-danger">
+                            @ViewBag.Error
+                        </div>
+                    }
+                </div>                
+                <form method="post" action="@Url.Action("PostVisitor", "Campaign")">
+                    @if (ViewBag.company != null && ViewBag.campaign != null)
+                    {
+                        <input type="hidden" value=@ViewBag.company.Id name="CompanyId" />
+                        <input type="hidden" value=@ViewBag.campaign.Id name="Campaign_Id" />
+                    }
+                    <input type="hidden" value=@ViewBag.co name="co" />
+                    <input type="hidden" value=@ViewBag.ca name="ca" />
+                    <div class="form-body">
+                        <div class="form-group">
+                            <label class="control-label visible-ie8 visible-ie9">Name</label>
+                            <div class="input-icon">
+                                <i class="fa fa-font"></i>
+                                <input class="form-control placeholder-no-fix" type="text" placeholder="Name" name="Name" required />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label visible-ie8 visible-ie9">Business Name</label>
+                            <div class="input-icon">
+                                <i class="fa fa-font"></i>
+                                <input class="form-control placeholder-no-fix" type="text" placeholder="Business Name" name="BusinessName" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label visible-ie8 visible-ie9">Email Address</label>
+                            <div class="input-icon">
+                                <i class="fa fa-envelope"></i>
+                                <input class="form-control placeholder-no-fix" type="text" placeholder="Email Address" name="Email" required />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label visible-ie8 visible-ie9">Phone Number</label>
+                            <div class="input-icon">
+                                <i class="fa fa-phone"></i>
+                                <input class="form-control placeholder-no-fix" type="text" placeholder="Phone Number" name="Phone" required />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label visible-ie8 visible-ie9">Address</label>
+                            <div class="input-icon">
+                                <i class="fa fa-check"></i>
+                                <textarea class="form-control placeholder-no-fix" rows="4" placeholder="Address" name="Address" required></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label visible-ie8 visible-ie9">City</label>
+                            <div class="input-icon">
+                                <i class="fa fa-location-arrow"></i>
+                                <input class="form-control placeholder-no-fix" type="text" placeholder="City" name="City" required />
+                            </div>
+                        </div>
+
+                        <input type="hidden" id="room" name="count" value=1 />
+                        <div id="education_fields">
+                            <div class="row" id="selectstate0">
+                                <div class="form-group">
+                                    <div class='col-md-12' id="states">
+                                        <div class="portlet-body">
+                                            <label>State / Province</label>
+                                            <select class="bs-select form-control" name="StateCover" required>
+                                                <option value="">Choose a state</option>
+                                                @foreach (var x in ViewBag.abc)
+                                                {
+                                                    <option value="@x.Id">@x.Name</option>
+                                                }
+                                                @*@for (int i = 1; i < ViewBag.statescount; i = i + 6)
+                                                {
+                                                    State s = new AdminBL().getStateById(i);
+                                                    if (s != null)
+                                                    {
+                                                        string[] strArr = null;
+                                                        string str = s.Name;
+                                                        char[] splitchar = { '(' };
+                                                        strArr = str.Split(splitchar);
+                                                        <option value=@s.Id> @strArr[0] </option>
+                                                    }
+                                                }*@
+                                            </select>
+                                        </div>
+                                    </div>
+                                    @*<div class='col-md-2'>
+                <br /><br />
+                <button id="addTimeCard" onclick="education_fields();" type="button" class="btn btn-success btn-number" data-type="plus" data-field="quant[2]">
+                    <span class="glyphicon glyphicon-plus"></span>
+                </button>
+            </div>*@
+
+                                        
+                                            
+                                    @*<label class="col-md-2 control-label" for="form_control_1">Part of State</label>*@
+                                            @*<div class="col-md-10">
+                                                <div class="md-checkbox-inline">
+                                                    <div class="md-checkbox has-info">
+                                <input type="checkbox" name="PartOfState0_1" id="checkbox0_1" class="md-check" value="All">
+                                <label for="checkbox0_1">
+                                    <span></span>
+                                    <span class="check"></span>
+                                    <span class="box"></span> All
+                                </label>
+                            </div>
+                                                    <div class="md-checkbox">
+                                                        <input type="checkbox" name="PartOfState0_2" id="checkbox0_2" class="md-check" value="East">
+                                                        <label for="checkbox0_2">
+                                                            <span></span>
+                                                            <span class="check"></span>
+                                                            <span class="box"></span> East
+                                                        </label>
+                                                    </div>
+                                                    <div class="md-checkbox">
+                                                        <input type="checkbox" name="PartOfState0_3" id="checkbox0_3" class="md-check" value="West">
+                                                        <label for="checkbox0_3">
+                                                            <span></span>
+                                                            <span class="check"></span>
+                                                            <span class="box"></span> West
+                                                        </label>
+                                                    </div>
+                                                    <div class="md-checkbox">
+                                                        <input type="checkbox" name="PartOfState0_4" id="checkbox0_4" value="North" class="md-check">
+                                                        <label for="checkbox0_4">
+                                                            <span></span>
+                                                            <span class="check"></span>
+                                                            <span class="box"></span> North
+                                                        </label>
+                                                    </div>
+                                                    <div class="md-checkbox">
+                                                        <input type="checkbox" name="PartOfState0_5" id="checkbox0_5" value="South" class="md-check">
+                                                        <label for="checkbox0_5">
+                                                            <span></span>
+                                                            <span class="check"></span>
+                                                            <span class="box"></span> South
+                                                        </label>
+                                                    </div>
+                                                    <div class="md-checkbox">
+                                                        <input type="checkbox" name="PartOfState0_6" id="checkbox0_6" value="Metro" class="md-check">
+                                                        <label for="checkbox0_6">
+                                                            <span></span>
+                                                            <span class="check"></span>
+                                                            <span class="box"></span> Metro
+                                                        </label>
+                                                    </div>
+                                                </div>*@
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+
+                        @*<div class="form-group">
+                            <label class="col-md-2 control-label">Part of State</label>
+                            <div class="md-radio-inline">
+                                <div class="md-radio">
+                                    <input type="radio" value="All" id="radio13" name="PartofState" class="md-radiobtn">
+                                    <label for="radio13">
+                                        <span></span>
+                                        <span class="check"></span>
+                                        <span class="box"></span> All
+                                    </label>
+                                </div>
+                                <div class="md-radio">
+                                    <input type="radio" value="East" id="radio14" name="PartofState" class="md-radiobtn">
+                                    <label for="radio14">
+                                        <span></span>
+                                        <span class="check"></span>
+                                        <span class="box"></span> East
+                                    </label>
+                                </div>
+                                <div class="md-radio">
+                                    <input type="radio" value="West" id="radio15" name="PartofState" class="md-radiobtn">
+                                    <label for="radio15">
+                                        <span></span>
+                                        <span class="check"></span>
+                                        <span class="box"></span> West
+                                    </label>
+                                </div>
+                                <div class="md-radio">
+                                    <input type="radio" value="North" id="radio16" name="PartofState" class="md-radiobtn">
+                                    <label for="radio16">
+                                        <span></span>
+                                        <span class="check"></span>
+                                        <span class="box"></span> North
+                                    </label>
+                                </div>
+                                <div class="md-radio">
+                                    <input type="radio" value="South" id="radio17" name="PartofState" class="md-radiobtn">
+                                    <label for="radio17">
+                                        <span></span>
+                                        <span class="check"></span>
+                                        <span class="box"></span> South
+                                    </label>
+                                </div>
+                                <div class="md-radio">
+                                    <input type="radio" value="Metro" id="radio18" name="PartofState" class="md-radiobtn">
+                                    <label for="radio18">
+                                        <span></span>
+                                        <span class="check"></span>
+                                        <span class="box"></span> Metro
+                                    </label>
+                                </div>
+                            </div>
+                        </div>*@
+                        <div class="form-group">
+                            <label class="control-label visible-ie8 visible-ie9">Zip / Postal Code</label>
+                            <div class="input-icon">
+                                <br /><br />
+                                <i class="fa fa-check"></i>
+                                <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Zip / Postal Code" name="ZipCode" required />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label visible-ie8 visible-ie9">Best Time To Contact</label>
+                            <select class="bs-select form-control" name="BestTime" required>
+                                <option value="">Best Time to Contact</option>
+                                <option value="Morning">Morning</option>
+                                <option value="Afternoon">Afternoon</option>
+                                <option value="Evening">Evening</option>
+                                <option value="Anytime">Anytime</option>
+                            </select>
+                            <div class="form-control-focus"> </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label visible-ie8 visible-ie9">Best Time To Contact</label>
+                            <select class="bs-select form-control" name="BestMethod" required>
+                                <option value="">Best Method of Contact</option>
+                                <option value="Phone">Phone</option>
+                                <option value="Email">Email</option>
+                                <option value="Text Message">Text Message</option>
+                            </select>
+                            <div class="form-control-focus"> </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label visible-ie8 visible-ie9">Message</label>
+                            <div class="input-icon">
+                                <i class="fa fa-envelope"></i>
+                                <textarea class="form-control placeholder-no-fix" rows="4" placeholder="Question or Comment (Optional)" name="Message"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="g-recaptcha" data-sitekey="6LfI61QUAAAAAEgi1TYbEwyZmWr_VmvYAM9Ezzm2"></div>
+                    <br />
+                    <div class="form-actions">
+                        <button type="submit" class="btn blue pull-right">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<center>
+    <a href="@Url.Action("Index", "Home")"><strong>Back To Home</strong></a>
+</center>
+
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script type="text/javascript">
+    var room = 1;
+
+    function education_fields() {
+
+        var objTo = document.getElementById('education_fields');
+        var divtest = document.createElement("div");
+        divtest.setAttribute("class", "row");
+        divtest.setAttribute("id", "selectstate" + room);
+        var states = '<div class="form-group form-md-line-input" ><label class="col-md-2 control-label" for="form_control_1">State Covered</label><div class="col-md-8" id="states"><div class="portlet-body"><select class="form-control" name= "StateCover' + room + '" required>';
+        var alloptions = document.getElementById('states').innerHTML;
+        var salloptions = alloptions.split('required="">');
+        salloptions = salloptions[1].split("</select>")
+        var states = states + salloptions[0];
+
+        states = states + "</select> </div>";
+        var selectstateid = 'selectstate' + room;
+        var click = 'onclick = remove_education_fields("' + selectstateid + '");';
+        states = states + '</div><div class="col-md-2"><div class="portlet-body" ><button id="addTimeCard" onclick="education_fields();" type="button" class="btn btn-success btn-number" data-type="plus" data-field="quant[2]"><span class="glyphicon glyphicon-plus"></span></button>';
+        states = states + '<button type= "button" class="btn btn-danger btn-number" ' + click + ' data-type="minus" data-field="quant[2]"><span class="glyphicon glyphicon-minus"></span></button></div></div><div class="col-md-offset-2 col-md-8"><div class="md-checkbox-inline"><div class="md-checkbox"><input type="checkbox" id="checkbox' + room + '_1" name="PartofState' + room + '_1" value="All" class="md-check"><label for="checkbox' + room + '_1"><span></span><span class="check"></span><span class="box"></span> All</label></div><div class="md-checkbox"><input type="checkbox" id="checkbox' + room + '_2" name="PartofState' + room + '_2" value="East" class="md-check"><label for="checkbox' + room + '_2"><span></span><span class="check"></span><span class="box"></span> East</label> </div><div class="md-checkbox"><input type="checkbox" id="checkbox' + room + '_3" name="PartofState' + room + '_3" value="West" class="md-check"><label for="checkbox' + room + '_3"><span></span><span class="check"></span><span class="box"></span> West</label> </div><div class="md-checkbox"><input type="checkbox" id="checkbox' + room + '_4" name="PartofState' + room + '_4" value="North" class="md-check"><label for="checkbox' + room + '_4"><span></span><span class="check"></span><span class="box"></span> North</label></div><div class="md-checkbox"> <input type="checkbox" id="checkbox' + room + '_5" name="PartofState' + room + '_5" value="South" class="md-check"><label for="checkbox' + room + '_5"><span></span><span class="check"></span><span class="box"></span> South</label></div><div class="md-checkbox"><input type="checkbox" id="checkbox' + room + '_6" name="PartofState' + room + '_6" value="All" class="md-check"><label for="checkbox' + room + '_6"><span></span><span class="check"></span><span class="box"></span> Metro</label></div></div></div></div></div></div>';
+        divtest.innerHTML = states;
+        objTo.appendChild(divtest);
+
+        document.getElementById('room').value = room;
+
+        room++;
+    }
+
+
+    function remove_education_fields(rid) {
+        $('#' + rid).remove();
+    }
+</script>

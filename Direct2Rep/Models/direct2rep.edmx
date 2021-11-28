@@ -1,0 +1,663 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Direct2RepModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Campaign">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="255" />
+          <Property Name="Url" Type="varchar" MaxLength="255" />
+          <Property Name="IsActive" Type="int" />
+          <Property Name="CompanyId" Type="int" />
+          <Property Name="Creadted_At" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Company">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="255" />
+          <Property Name="Logo" Type="varchar" MaxLength="255" />
+          <Property Name="Website" Type="varchar" MaxLength="255" />
+          <Property Name="Phone" Type="varchar" MaxLength="255" />
+          <Property Name="Email" Type="varchar" MaxLength="255" />
+          <Property Name="IsActive" Type="int" />
+          <Property Name="Password" Type="varchar" MaxLength="50" />
+          <Property Name="Creadted_At" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Company_SaleRep">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IsActive" Type="int" />
+          <Property Name="CompanyId" Type="int" />
+          <Property Name="SaleRepId" Type="int" />
+          <Property Name="Creadted_At" Type="datetime" />
+        </EntityType>
+        <EntityType Name="RepStatePart">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IsActive" Type="int" />
+          <Property Name="SaleRepId" Type="int" />
+          <Property Name="StateId" Type="int" />
+          <Property Name="Creadted_At" Type="datetime" />
+        </EntityType>
+        <EntityType Name="SaleRepresentative">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="255" />
+          <Property Name="SalesFirmName" Type="varchar" MaxLength="255" />
+          <Property Name="Email" Type="varchar" MaxLength="255" />
+          <Property Name="EmailReceiveLeads" Type="varchar" MaxLength="255" />
+          <Property Name="PictureUpload" Type="varchar" MaxLength="255" />
+          <Property Name="LogoUpload" Type="varchar" MaxLength="255" />
+          <Property Name="IsActive" Type="int" />
+          <Property Name="Creadted_At" Type="datetime" />
+        </EntityType>
+        <EntityType Name="State">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IsActive" Type="int" />
+          <Property Name="Name" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="255" />
+          <Property Name="Email" Type="varchar" MaxLength="255" />
+          <Property Name="Role" Type="int" />
+          <Property Name="IsActive" Type="int" />
+          <Property Name="Password" Type="varchar" MaxLength="255" />
+          <Property Name="Creadted_At" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Visitor">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="255" />
+          <Property Name="BusinessName" Type="varchar" MaxLength="255" />
+          <Property Name="Email" Type="varchar" MaxLength="255" />
+          <Property Name="Phone" Type="varchar" MaxLength="255" />
+          <Property Name="Address" Type="varchar" MaxLength="255" />
+          <Property Name="City" Type="varchar" MaxLength="255" />
+          <Property Name="ZipCode" Type="varchar" MaxLength="255" />
+          <Property Name="BestTime" Type="varchar" MaxLength="255" />
+          <Property Name="BestMethod" Type="varchar" MaxLength="255" />
+          <Property Name="IsActive" Type="int" />
+          <Property Name="Campaign_Id" Type="int" />
+          <Property Name="Message" Type="varchar(max)" />
+          <Property Name="Creadted_At" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Visitor_States">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IsActive" Type="int" />
+          <Property Name="StateId" Type="int" />
+          <Property Name="VisitorId" Type="int" />
+          <Property Name="Creadted_At" Type="datetime" />
+        </EntityType>
+        <Association Name="com_fk">
+          <End Role="Campaign" Type="Self.Campaign" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Visitor" Type="Self.Visitor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Campaign">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Visitor">
+              <PropertyRef Name="Campaign_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="company_fk">
+          <End Role="Company" Type="Self.Company" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Company_SaleRep" Type="Self.Company_SaleRep" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Company_SaleRep">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Visitor_States_ToState">
+          <End Role="State" Type="Self.State" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Visitor_States" Type="Self.Visitor_States" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="State">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Visitor_States">
+              <PropertyRef Name="StateId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Visitor_States_ToVisitor">
+          <End Role="Visitor" Type="Self.Visitor" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Visitor_States" Type="Self.Visitor_States" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Visitor">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Visitor_States">
+              <PropertyRef Name="VisitorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="salerep_fk">
+          <End Role="SaleRepresentative" Type="Self.SaleRepresentative" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Company_SaleRep" Type="Self.Company_SaleRep" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SaleRepresentative">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Company_SaleRep">
+              <PropertyRef Name="SaleRepId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="salesreps_fk">
+          <End Role="SaleRepresentative" Type="Self.SaleRepresentative" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="RepStatePart" Type="Self.RepStatePart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SaleRepresentative">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RepStatePart">
+              <PropertyRef Name="SaleRepId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="states_fk">
+          <End Role="State" Type="Self.State" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="RepStatePart" Type="Self.RepStatePart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="State">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RepStatePart">
+              <PropertyRef Name="StateId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Direct2RepModelStoreContainer">
+          <EntitySet Name="Campaign" EntityType="Self.Campaign" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Company" EntityType="Self.Company" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Company_SaleRep" EntityType="Self.Company_SaleRep" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RepStatePart" EntityType="Self.RepStatePart" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SaleRepresentative" EntityType="Self.SaleRepresentative" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="State" EntityType="Self.State" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Visitor" EntityType="Self.Visitor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Visitor_States" EntityType="Self.Visitor_States" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="com_fk" Association="Self.com_fk">
+            <End Role="Campaign" EntitySet="Campaign" />
+            <End Role="Visitor" EntitySet="Visitor" />
+          </AssociationSet>
+          <AssociationSet Name="company_fk" Association="Self.company_fk">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="Company_SaleRep" EntitySet="Company_SaleRep" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Visitor_States_ToState" Association="Self.FK_Visitor_States_ToState">
+            <End Role="State" EntitySet="State" />
+            <End Role="Visitor_States" EntitySet="Visitor_States" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Visitor_States_ToVisitor" Association="Self.FK_Visitor_States_ToVisitor">
+            <End Role="Visitor" EntitySet="Visitor" />
+            <End Role="Visitor_States" EntitySet="Visitor_States" />
+          </AssociationSet>
+          <AssociationSet Name="salerep_fk" Association="Self.salerep_fk">
+            <End Role="SaleRepresentative" EntitySet="SaleRepresentative" />
+            <End Role="Company_SaleRep" EntitySet="Company_SaleRep" />
+          </AssociationSet>
+          <AssociationSet Name="salesreps_fk" Association="Self.salesreps_fk">
+            <End Role="SaleRepresentative" EntitySet="SaleRepresentative" />
+            <End Role="RepStatePart" EntitySet="RepStatePart" />
+          </AssociationSet>
+          <AssociationSet Name="states_fk" Association="Self.states_fk">
+            <End Role="State" EntitySet="State" />
+            <End Role="RepStatePart" EntitySet="RepStatePart" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Direct2RepModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Campaign">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Url" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="IsActive" Type="Int32" />
+          <Property Name="CompanyId" Type="Int32" />
+          <Property Name="Creadted_At" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Visitors" Relationship="Self.com_fk" FromRole="Campaign" ToRole="Visitor" />
+        </EntityType>
+        <EntityType Name="Company">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Logo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Website" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Phone" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="IsActive" Type="Int32" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Creadted_At" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Company_SaleRep" Relationship="Self.company_fk" FromRole="Company" ToRole="Company_SaleRep" />
+        </EntityType>
+        <EntityType Name="Company_SaleRep">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IsActive" Type="Int32" />
+          <Property Name="CompanyId" Type="Int32" />
+          <Property Name="SaleRepId" Type="Int32" />
+          <Property Name="Creadted_At" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Company" Relationship="Self.company_fk" FromRole="Company_SaleRep" ToRole="Company" />
+          <NavigationProperty Name="SaleRepresentative" Relationship="Self.salerep_fk" FromRole="Company_SaleRep" ToRole="SaleRepresentative" />
+        </EntityType>
+        <EntityType Name="RepStatePart">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IsActive" Type="Int32" />
+          <Property Name="SaleRepId" Type="Int32" />
+          <Property Name="StateId" Type="Int32" />
+          <Property Name="Creadted_At" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="SaleRepresentative" Relationship="Self.salesreps_fk" FromRole="RepStatePart" ToRole="SaleRepresentative" />
+          <NavigationProperty Name="State" Relationship="Self.states_fk" FromRole="RepStatePart" ToRole="State" />
+        </EntityType>
+        <EntityType Name="SaleRepresentative">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="SalesFirmName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="EmailReceiveLeads" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="PictureUpload" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="LogoUpload" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="IsActive" Type="Int32" />
+          <Property Name="Creadted_At" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Company_SaleRep" Relationship="Self.salerep_fk" FromRole="SaleRepresentative" ToRole="Company_SaleRep" />
+          <NavigationProperty Name="RepStateParts" Relationship="Self.salesreps_fk" FromRole="SaleRepresentative" ToRole="RepStatePart" />
+        </EntityType>
+        <EntityType Name="State">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IsActive" Type="Int32" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="RepStateParts" Relationship="Self.states_fk" FromRole="State" ToRole="RepStatePart" />
+          <NavigationProperty Name="Visitor_States" Relationship="Self.FK_Visitor_States_ToState" FromRole="State" ToRole="Visitor_States" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Role" Type="Int32" />
+          <Property Name="IsActive" Type="Int32" />
+          <Property Name="Password" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Creadted_At" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Visitor">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="BusinessName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Phone" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ZipCode" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="BestTime" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="BestMethod" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="IsActive" Type="Int32" />
+          <Property Name="Campaign_Id" Type="Int32" />
+          <Property Name="Message" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Creadted_At" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Campaign" Relationship="Self.com_fk" FromRole="Visitor" ToRole="Campaign" />
+          <NavigationProperty Name="Visitor_States" Relationship="Self.FK_Visitor_States_ToVisitor" FromRole="Visitor" ToRole="Visitor_States" />
+        </EntityType>
+        <EntityType Name="Visitor_States">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IsActive" Type="Int32" />
+          <Property Name="StateId" Type="Int32" />
+          <Property Name="VisitorId" Type="Int32" />
+          <Property Name="Creadted_At" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="State" Relationship="Self.FK_Visitor_States_ToState" FromRole="Visitor_States" ToRole="State" />
+          <NavigationProperty Name="Visitor" Relationship="Self.FK_Visitor_States_ToVisitor" FromRole="Visitor_States" ToRole="Visitor" />
+        </EntityType>
+        <Association Name="com_fk">
+          <End Role="Campaign" Type="Self.Campaign" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Visitor" Type="Self.Visitor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Campaign">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Visitor">
+              <PropertyRef Name="Campaign_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="company_fk">
+          <End Role="Company" Type="Self.Company" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Company_SaleRep" Type="Self.Company_SaleRep" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Company_SaleRep">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="salerep_fk">
+          <End Role="SaleRepresentative" Type="Self.SaleRepresentative" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Company_SaleRep" Type="Self.Company_SaleRep" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SaleRepresentative">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Company_SaleRep">
+              <PropertyRef Name="SaleRepId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="salesreps_fk">
+          <End Role="SaleRepresentative" Type="Self.SaleRepresentative" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="RepStatePart" Type="Self.RepStatePart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SaleRepresentative">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RepStatePart">
+              <PropertyRef Name="SaleRepId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="states_fk">
+          <End Role="State" Type="Self.State" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="RepStatePart" Type="Self.RepStatePart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="State">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RepStatePart">
+              <PropertyRef Name="StateId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Visitor_States_ToState">
+          <End Role="State" Type="Self.State" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Visitor_States" Type="Self.Visitor_States" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="State">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Visitor_States">
+              <PropertyRef Name="StateId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Visitor_States_ToVisitor">
+          <End Role="Visitor" Type="Self.Visitor" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Visitor_States" Type="Self.Visitor_States" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Visitor">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Visitor_States">
+              <PropertyRef Name="VisitorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Direct2RepEntities2" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Campaigns" EntityType="Self.Campaign" />
+          <EntitySet Name="Companies" EntityType="Self.Company" />
+          <EntitySet Name="Company_SaleRep" EntityType="Self.Company_SaleRep" />
+          <EntitySet Name="RepStateParts" EntityType="Self.RepStatePart" />
+          <EntitySet Name="SaleRepresentatives" EntityType="Self.SaleRepresentative" />
+          <EntitySet Name="States" EntityType="Self.State" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <EntitySet Name="Visitors" EntityType="Self.Visitor" />
+          <EntitySet Name="Visitor_States" EntityType="Self.Visitor_States" />
+          <AssociationSet Name="com_fk" Association="Self.com_fk">
+            <End Role="Campaign" EntitySet="Campaigns" />
+            <End Role="Visitor" EntitySet="Visitors" />
+          </AssociationSet>
+          <AssociationSet Name="company_fk" Association="Self.company_fk">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="Company_SaleRep" EntitySet="Company_SaleRep" />
+          </AssociationSet>
+          <AssociationSet Name="salerep_fk" Association="Self.salerep_fk">
+            <End Role="SaleRepresentative" EntitySet="SaleRepresentatives" />
+            <End Role="Company_SaleRep" EntitySet="Company_SaleRep" />
+          </AssociationSet>
+          <AssociationSet Name="salesreps_fk" Association="Self.salesreps_fk">
+            <End Role="SaleRepresentative" EntitySet="SaleRepresentatives" />
+            <End Role="RepStatePart" EntitySet="RepStateParts" />
+          </AssociationSet>
+          <AssociationSet Name="states_fk" Association="Self.states_fk">
+            <End Role="State" EntitySet="States" />
+            <End Role="RepStatePart" EntitySet="RepStateParts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Visitor_States_ToState" Association="Self.FK_Visitor_States_ToState">
+            <End Role="State" EntitySet="States" />
+            <End Role="Visitor_States" EntitySet="Visitor_States" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Visitor_States_ToVisitor" Association="Self.FK_Visitor_States_ToVisitor">
+            <End Role="Visitor" EntitySet="Visitors" />
+            <End Role="Visitor_States" EntitySet="Visitor_States" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Direct2RepModelStoreContainer" CdmEntityContainer="Direct2RepEntities2">
+          <EntitySetMapping Name="Campaigns">
+            <EntityTypeMapping TypeName="Direct2RepModel.Campaign">
+              <MappingFragment StoreEntitySet="Campaign">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Url" ColumnName="Url" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="Creadted_At" ColumnName="Creadted_At" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Companies">
+            <EntityTypeMapping TypeName="Direct2RepModel.Company">
+              <MappingFragment StoreEntitySet="Company">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Logo" ColumnName="Logo" />
+                <ScalarProperty Name="Website" ColumnName="Website" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Creadted_At" ColumnName="Creadted_At" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Company_SaleRep">
+            <EntityTypeMapping TypeName="Direct2RepModel.Company_SaleRep">
+              <MappingFragment StoreEntitySet="Company_SaleRep">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="SaleRepId" ColumnName="SaleRepId" />
+                <ScalarProperty Name="Creadted_At" ColumnName="Creadted_At" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RepStateParts">
+            <EntityTypeMapping TypeName="Direct2RepModel.RepStatePart">
+              <MappingFragment StoreEntitySet="RepStatePart">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="SaleRepId" ColumnName="SaleRepId" />
+                <ScalarProperty Name="StateId" ColumnName="StateId" />
+                <ScalarProperty Name="Creadted_At" ColumnName="Creadted_At" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SaleRepresentatives">
+            <EntityTypeMapping TypeName="Direct2RepModel.SaleRepresentative">
+              <MappingFragment StoreEntitySet="SaleRepresentative">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="SalesFirmName" ColumnName="SalesFirmName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="EmailReceiveLeads" ColumnName="EmailReceiveLeads" />
+                <ScalarProperty Name="PictureUpload" ColumnName="PictureUpload" />
+                <ScalarProperty Name="LogoUpload" ColumnName="LogoUpload" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Creadted_At" ColumnName="Creadted_At" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="States">
+            <EntityTypeMapping TypeName="Direct2RepModel.State">
+              <MappingFragment StoreEntitySet="State">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="Direct2RepModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Creadted_At" ColumnName="Creadted_At" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Visitors">
+            <EntityTypeMapping TypeName="Direct2RepModel.Visitor">
+              <MappingFragment StoreEntitySet="Visitor">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="BusinessName" ColumnName="BusinessName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="ZipCode" ColumnName="ZipCode" />
+                <ScalarProperty Name="BestTime" ColumnName="BestTime" />
+                <ScalarProperty Name="BestMethod" ColumnName="BestMethod" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Campaign_Id" ColumnName="Campaign_Id" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="Creadted_At" ColumnName="Creadted_At" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Visitor_States">
+            <EntityTypeMapping TypeName="Direct2RepModel.Visitor_States">
+              <MappingFragment StoreEntitySet="Visitor_States">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="StateId" ColumnName="StateId" />
+                <ScalarProperty Name="VisitorId" ColumnName="VisitorId" />
+                <ScalarProperty Name="Creadted_At" ColumnName="Creadted_At" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

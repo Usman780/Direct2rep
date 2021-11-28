@@ -1,0 +1,201 @@
+﻿
+@{
+    ViewBag.Title = "ListSalesRepCompany";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@using Direct2Rep.Models
+@using Direct2Rep.BL
+
+<div class="modal fade" id="deleteCompanys" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <form action="@Url.Action("DeleteCompanySaleRep","Admin")" method="post">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="exampleModalLabel">Delete</h4>
+                </div>
+                <div class="modal-body">
+                    <p>You are going to delete this assignment of rep. Are you sure?</p>
+                    <input type="hidden" class="form-control" id="propId" name="Id" required>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                        <button type="submit" class="btn btn-primary">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+
+<div class="page-content-wrapper">
+    <!-- BEGIN CONTENT BODY -->
+    <div class="page-content">
+        <!-- BEGIN PAGE HEAD-->
+        <div class="page-head">
+            <!-- BEGIN PAGE TITLE -->
+            <div class="page-title">
+                <h1>
+                    Dashboard
+                    <small>statistics, charts and reports</small>
+                </h1>
+            </div>
+            <!-- END PAGE TITLE -->
+        </div>
+        <!-- END PAGE HEAD-->
+        <!-- BEGIN PAGE BREADCRUMB -->
+        <ul class="page-breadcrumb breadcrumb">
+            <li>
+                <a href="@Url.Action("Index","Admin")">Home</a>
+                <i class="fa fa-circle"></i>
+            </li>
+            <li>
+                <span class="active">Sales Reps & Companies</span>
+            </li>
+        </ul>
+        <!-- END PAGE BREADCRUMB -->
+        <!-- BEGIN PAGE BASE CONTENT -->
+        <div class="row">
+            <div class="col-md-12">
+                <!-- BEGIN EXAMPLE TABLE PORTLET-->
+                <div class="portlet light bordered">
+                    <div class="portlet-title">
+                        <div class="caption font-dark">
+                            <i class=" font-dark"></i>
+                            <span class="caption-subject bold uppercase">List of Sales Rep Assignments</span>
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <table class="table table-striped table-hover table-bordered" id="sample_1">
+                            <thead>
+                                <tr>
+                                    <th>Sales Rep Name</th>
+                                    <th>Company Name</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (ViewBag.compsales != null)
+                                    {
+                                        foreach (Company_SaleRep item in ViewBag.compsales)
+                                        {
+                                            <tr>
+                                                <td>@item.SaleRepresentative.Name</td>
+                                                <td>@item.Company.Name</td>
+                                                <td>
+                                                    <a class="btn btn-danger" data-target="#deleteCompany" data-toggle="modal" onclick="deleteCompany('@item.Id')">
+                                                    @*<img src="~/Content/images/delete.png" />*@
+                                                        DELETE
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- END EXAMPLE TABLE PORTLET-->
+            </div>
+        </div>
+        <!-- END PAGE BASE CONTENT -->
+    </div>
+    <!-- END CONTENT BODY -->
+</div>
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+@*<script>
+    $(document).ready(function () {
+
+        var table = $('#hassanTable');
+
+        var oTable = table.dataTable({
+
+            // Internationalisation. For more info refer to http://datatables.net/manual/i18n
+             "ajax": {
+                    "url": '@Url.Action("getListSalesRepCompany", "Admin")',
+                    "type": "GET",
+                    "datatype": "json"
+                },
+                "columns": [
+                    { "data": "SalesRepNam", "name": "SalesRepNam" },
+                    { "data": "CompanyName", "name": "CompanyName" },
+                    { "data": "Id", "name": "Id" }
+                ],
+                'columnDefs': [
+                    {
+                        //'<a class="btn btn-sm  bg-secondary" href="../Utilities/sendMailInviteManager?id=' + full.Id + '&em=' + full.Email + '&fn=' + full.FirstName + '&isUtilityPage='+'true'+'">Send Invite Again </a><a class="btn  btn-sm btn-danger" data-toggle="modal" data-target="#deleteModal" onclick="deleteManager(' + full.Id + ')"><i class="icon-trash"></i></a>';
+                        render: function (data, type, full, meta) {
+                            //' <a class="btn btn-sm  bg-secondary" href="Url.Action("sendMailInviteManager", "Utilities", new { id = ' + full.Id + ', em ='+ full.Email+', fn = '+full.FirstName+', isUtilityPage = true })">Send Invite Again</a>
+                            return ' <button class="btn btn-sm  btn-danger" data-target="#deleteCompany" data-toggle="modal" onclick="deleteCompany(' + full.Id + ')"> Delete </button>';
+                        },
+                        targets: 2
+                    }
+                ],
+                "serverSide": "true",
+                "processing": "true",
+               
+            "language": {
+                "aria": {
+                    "sortAscending": ": activate to sort column ascending",
+                    "sortDescending": ": activate to sort column descending"
+                },
+                "emptyTable": "No data available in table",
+                "info": "Showing _START_ to _END_ of _TOTAL_ entries",
+                "infoEmpty": "No entries found",
+                "infoFiltered": "(filtered1 from _MAX_ total entries)",
+                "lengthMenu": "_MENU_ entries",
+                "search": "Search:",
+                "zeroRecords": "No matching records found"
+            },
+
+            // Or you can use remote translation file
+            //"language": {
+            //   url: '//cdn.datatables.net/plug-ins/3cfcc339e89/i18n/Portuguese.json'
+            //},
+
+
+            buttons: [
+                //{ extend: 'print', className: 'btn dark btn-outline' },
+                { extend: 'copy', className: 'btn red btn-outline', exportOptions: { columns: ':not(:last-child)' } },
+                //{ extend: 'pdf', className: 'btn green btn-outline', exportOptions: { columns: ':not(:last-child)' } },
+                { extend: 'excel', className: 'btn yellow btn-outline ', exportOptions: { columns: ':not(:last-child)' } },
+                { extend: 'csv', className: 'btn purple btn-outline ', exportOptions: { columns: ':not(:last-child)' } },
+                { extend: 'colvis', className: 'btn dark btn-outline', text: 'Columns ON / OFF' }
+            ],
+
+            // setup responsive extension: http://datatables.net/extensions/responsive/
+            responsive: true,
+
+            //"ordering": false, disable column ordering 
+            //"paging": false, disable pagination
+
+            "order": [
+                [0, 'asc']
+            ],
+
+            "lengthMenu": [
+                [5, 10, 15, 20, -1],
+                [5, 10, 15, 20, "All"] // change per page values here
+            ],
+            // set the initial value
+            "pageLength": 10,
+
+            "dom": "<'row' <'col-md-12'B>><'row'<'col-md-6 col-sm-12'l><'col-md-6 col-sm-12'f>r><'table-scrollable't><'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12'p>>", // horizobtal scrollable datatable
+
+            // Uncomment below line("dom" parameter) to fix the dropdown overflow issue in the datatable cells. The default datatable layout
+            // setup uses scrollable div(table-scrollable) with overflow:auto to enable vertical scroll(see: assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js). 
+            // So when dropdowns used the scrollable div should be removed. 
+            //"dom": "<'row' <'col-md-12'T>><'row'<'col-md-6 col-sm-12'l><'col-md-6 col-sm-12'f>r>t<'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12'p>>",
+        });
+    });
+</script>*@
+
+
+<script>
+    function deleteCompany(Id) {
+        $('#propId').val(Id);
+        $("#deleteCompanys").modal('show');
+    }
+</script>

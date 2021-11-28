@@ -1,0 +1,100 @@
+﻿@{
+    ViewBag.Title = "SelectSalesRepresentative";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@using Direct2Rep.Models
+@using Direct2Rep.BL
+
+<div class="page-content-wrapper">
+    <!-- BEGIN CONTENT BODY -->
+    <div class="page-content">
+        <!-- BEGIN PAGE HEAD-->
+        <div class="page-head">
+            <!-- BEGIN PAGE TITLE -->
+            <div class="page-title">
+                <h1>
+                    Dashboard
+                    <small>statistics, charts and reports</small>
+                </h1>
+            </div>
+            <!-- END PAGE TITLE -->
+        </div>
+        <!-- END PAGE HEAD-->
+        <!-- BEGIN PAGE BREADCRUMB -->
+        @*<ul class="page-breadcrumb breadcrumb">
+                <li>
+                    <a href="@Url.Action("Index","Admin")">Home</a>
+                    <i class="fa fa-circle"></i>
+                </li>
+                <li>
+                    <span class="active">Company Report</span>
+                </li>
+            </ul>*@
+        <!-- END PAGE BREADCRUMB -->
+        <br />
+        <br />
+        <div class="row">
+            <form action="@Url.Action("GetSaleRepReport", "Company")" method="post">
+                <div class="col-md-offset-2 col-md-3">
+                    <label class="label-absolute">by Sales Representative</label>
+                    <select class="form-control" name="Salerep_Id" required>
+                        <option value="">Select one</option>
+                        @if (ViewBag.salesrepscount > 0)
+                        {
+                            foreach (SaleRepresentative c in ViewBag.salesreps)
+                            {
+                                <option value=@c.Id>@c.Name</option>
+                            }
+                        }|
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label class="label-absolute">Start Date</label>
+                    @if (ViewBag.startdate == null)
+                    {
+                        <input type="date" class="form-control" name="startdate">
+                    }
+                    else
+                    {
+                        <input type="text" class="form-control dateField" value="@ViewBag.startdate.ToString("yyyy-MM-dd")" id="Date1" name="startdate" onfocus="DateType('Date')" onblur="" required>
+                    }
+                </div>
+                <div class="col-md-2">
+                    <label class="label-absolute">End Date</label>
+                    @if (ViewBag.enddate == null)
+                    {
+                        <input type="date" class="form-control" name="enddate">
+                    }
+                    else
+                    {
+                        <input type="text" class="form-control dateField" value="@ViewBag.enddate.ToString("yyyy-MM-dd")" id="Date2" name="enddate" onfocus="DateType('Date')" onblur="" required>
+                    }
+                </div>
+                <div class="col-md-2">
+                    <br />
+                    <button type="submit" class="btn btn-primary">Get Report</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<link href="~/Content/Pagination/jquery.paginate.css" rel="stylesheet" />
+<script src="~/Content/Pagination/jquery.paginate.js"></script>
+<script type="text/javascript">
+    function DateType() {
+        $(".dateField").attr('type', 'date');
+    }
+    function TextType(Id) {
+
+        var x = $("#Id").val;
+        if (x == "") {
+            $(".dateField").attr('type', 'text');
+            $(".dateField").attr('placeholder', 'Enter Date');
+        }
+    }
+</script>

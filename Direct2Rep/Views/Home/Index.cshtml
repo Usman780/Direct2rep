@@ -1,0 +1,126 @@
+﻿@*@{
+    ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Direct2Rep.Models
+
+<section class="height-500" id="slider" style="background:url('../Content/Web/demo_files/images/1200x800/11-min.jpg')">
+    <div class="overlay dark-6"><!-- dark overlay [0 to 9 opacity] --></div>
+
+    <div class="display-table">
+        <div class="display-table-cell vertical-align-middle">
+
+            <div class="container text-center">
+
+                <h1 class="nomargin wow fadeInUp" data-wow-delay="0.4s">
+                    WE ARE
+                    <!--
+                        TEXT ROTATOR
+                        data-animation="fade|flip|flipCube|flipUp|spin"
+                    -->
+                    <span class="rotate " data-animation="fade" data-speed="1500">
+                        DIRECT2REP, MULTIPURPOSE, POWERFUL
+                    </span>
+                </h1>
+            </div>
+        </div>
+    </div>
+
+</section>
+<!-- /SLIDER -->
+<!-- -->
+<section>
+    <div class="container">
+
+        <!-- FEATURED BOXES 3 -->
+        <div class="row">
+            <center><h2><strong>Companies</strong></h2></center>
+            @foreach (Company c in ViewBag.Companies)
+            {
+            <div class="col-md-4 col-xs-6 margin-bottom-30">
+                <div class="text-center">
+                    @if (c.Logo == null)
+                    {
+                       <img class="responsive" src="" alt="No Logo Uploaded" />
+                    }
+                    else
+                    {
+                        <img class="responsive" src="@Url.Content(c.Logo)" alt="No Logo Uploaded" height="100" width="100" />
+                    }                    
+                    <h4><strong>@c.Name</strong></h4>                   
+                </div>
+            </div>
+            }
+        </div>
+        <!-- /FEATURED BOXES 3 -->
+
+    </div>
+</section>
+<!-- / -->
+<!-- CALLOUT -->
+<div class="alert alternate bordered-bottom nomargin">
+    <div class="container">
+        <div class="row">
+            <center>
+                <!-- left text -->
+                <h3><strong>OVER <span class="countTo weight-400" data-speed="3000">@ViewBag.CompaniesCount</span> COMPANIES TRUST OUR SERVICES</strong></h3>
+                <p class="font-lato weight-300 size-20 nomargin-bottom">
+                    We truly care about our users and our product.
+                </p>
+            </center><!-- /left text -->
+        </div>
+    </div>
+</div>*@
+
+
+
+@{
+    Layout = "~/Views/Shared/_AuthLayout.cshtml";
+}
+
+<script src='https://www.google.com/recaptcha/api.js'></script>
+
+<!-- BEGIN LOGIN FORM -->
+<form class="login-form" method="post" action="@Url.Action("PostLogin","Auth")">
+    <h3 class="form-title">Login to your account</h3>
+    @if (ViewBag.err != "")
+            {
+        <div class="form-group">
+            <p class="alert alert-info" style="color: black;">@ViewBag.err</p>
+        </div>
+    }
+    <div class="form-group">
+        <!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
+        <label class="control-label visible-ie8 visible-ie9">Email</label>
+        <div class="input-icon">
+            <i class="fa fa-user"></i>
+            <input class="form-control placeholder-no-fix" type="email" name="email" id="Email" placeholder="Enter your Email" required />
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label visible-ie8 visible-ie9">Password</label>
+        <div class="input-icon">
+            <i class="fa fa-lock"></i>
+            <input class="form-control placeholder-no-fix" type="password" name="password" id="password" placeholder="Enter your Password" required />
+        </div>
+    </div>
+    <div class="g-recaptcha" data-sitekey="6LfI61QUAAAAAEgi1TYbEwyZmWr_VmvYAM9Ezzm2"></div><br />
+    <div class="form-actions">
+        <center><button type="submit" class="btn btn-lg green"> Login </button></center>
+    </div>
+    <div class="forget-password">
+        <h4>Forgot your password ?</h4>
+        <p>
+            No worries! Click
+            <a href="@Url.Action("EmailVerification", "Auth")" id="forget-password"><strong> here </strong></a> to reset your password.
+        </p>
+    </div>
+    @*<div class="create-account">
+            <p>
+                Don't have an account yet ?&nbsp;
+                <a href="javascript:;" id="register-btn"> Create an account </a>
+            </p>
+        </div>*@
+</form>
+
+<!-- END LOGIN FORM -->

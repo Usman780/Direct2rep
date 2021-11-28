@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="d54b6f4a6fb04d528bdc1b4d749b725c" Name="Diagram1">
+        <EntityTypeShape EntityType="Direct2RepModel.Campaign" Width="1.5" PointX="1.5" PointY="12.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Direct2RepModel.Company" Width="1.5" PointX="0.75" PointY="17.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Direct2RepModel.Company_SaleRep" Width="1.5" PointX="3" PointY="7.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Direct2RepModel.RepStatePart" Width="1.5" PointX="3" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Direct2RepModel.SaleRepresentative" Width="1.5" PointX="0.75" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Direct2RepModel.State" Width="1.5" PointX="0.75" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Direct2RepModel.User" Width="1.5" PointX="5.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Direct2RepModel.Visitor" Width="1.5" PointX="3.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Direct2RepModel.Visitor_States" Width="1.5" PointX="6" PointY="2.625" IsExpanded="true" />
+        <AssociationConnector Association="Direct2RepModel.com_fk" ManuallyRouted="false" />
+        <AssociationConnector Association="Direct2RepModel.company_fk" ManuallyRouted="false" />
+        <AssociationConnector Association="Direct2RepModel.salerep_fk" ManuallyRouted="false" />
+        <AssociationConnector Association="Direct2RepModel.salesreps_fk" ManuallyRouted="false" />
+        <AssociationConnector Association="Direct2RepModel.states_fk" ManuallyRouted="false" />
+        <AssociationConnector Association="Direct2RepModel.FK_Visitor_States_ToState" ManuallyRouted="false" />
+        <AssociationConnector Association="Direct2RepModel.FK_Visitor_States_ToVisitor" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

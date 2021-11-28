@@ -1,0 +1,59 @@
+﻿@{
+    ViewBag.Title = "Company Form";
+    Layout = "~/Views/Shared/_CompanyLayout.cshtml";
+}
+@using Direct2Rep.BL
+@using Direct2Rep.Models
+<style>
+    .multiselect-container > li > a > label.radio, .multiselect-container > li > a > label.checkbox {
+        margin: 0;
+        padding: 10px;
+        height: 10px !important;
+    }
+
+    .multiselect-container {
+        height: 400px;
+        overflow-y: scroll;
+    }
+</style>
+<script src='https://www.google.com/recaptcha/api.js'></script>
+
+<div class="row">
+    <div class="col-md-offset-3 col-md-6">
+        @if (ViewBag.Message != "")
+        {
+            <div class="alert alert-info">
+                <h2>
+                    Thank You! <br />
+                    @ViewBag.message
+                </h2>
+            </div>
+        }
+
+        @if (ViewBag.Error != "")
+        {
+            <div class="alert alert-danger">
+                <h2>
+                    @ViewBag.error
+                </h2>
+            </div>
+        }
+    </div>
+</div>
+<div>
+    <center>
+        <h3>
+            @{ 
+                    string a = ViewBag.website;
+
+                if(a.Contains(""))
+                {
+                    a = "http://" + ViewBag.website;
+                }
+            }
+            Visit Our Website at
+            <a href="@a" target="_blank"><b style="color: #8AB933;">@ViewBag.website</b></a>
+        </h3>
+    </center>
+</div>
+<br /><br />

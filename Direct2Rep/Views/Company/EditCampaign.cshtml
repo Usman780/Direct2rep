@@ -1,0 +1,96 @@
+﻿
+@{
+    ViewBag.Title = "EditCampaign";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@model Direct2Rep.Models.Campaign
+<div class="page-content-wrapper">
+    <!-- BEGIN CONTENT BODY -->
+    <div class="page-content">
+        <!-- BEGIN PAGE HEAD-->
+        <div class="page-head">
+            <!-- BEGIN PAGE TITLE -->
+            <div class="page-title">
+                <h1>
+                    Dashboard
+                    <small>statistics, charts and reports</small>
+                </h1>
+            </div>
+            <!-- END PAGE TITLE -->
+        </div>
+        <!-- END PAGE HEAD-->
+        <!-- BEGIN PAGE BREADCRUMB -->
+        <ul class="page-breadcrumb breadcrumb">
+            <li>
+                <a href="@Url.Action("Index","Admin")">Home</a>
+                <i class="fa fa-circle"></i>
+            </li>
+            <li>
+                <span class="active">Update Campaign</span>
+            </li>
+        </ul>
+        <!-- END PAGE BREADCRUMB -->
+        <!-- BEGIN PAGE BASE CONTENT -->
+        <div class="row">
+            <div class="col-md-12">
+                <!-- BEGIN SAMPLE FORM PORTLET-->
+                <div class="portlet light bordered">
+                    <div class="portlet-title">
+                        <div class="caption font-green-haze">
+                            <i class="icon-home font-green-haze"></i>
+                            <span class="caption-subject bold uppercase"> Update Campaign</span>
+                        </div>
+                        <div class="actions">
+
+                            <a class="btn btn-circle btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title=""> </a>
+                        </div>
+                    </div>
+                    <div class="portlet-body form">
+                        <div class="row">
+                            @if (ViewBag.Message != null)
+                            {
+                                <div class="alert alert-success">
+                                    @ViewBag.Message
+                                </div>
+                            }
+                            @if (ViewBag.Error != null)
+                            {
+                                <div class="alert alert-danger">
+                                    @ViewBag.Error
+                                </div>
+                            }
+                        </div>
+                        <form role="form" class="form-horizontal" action="@Url.Action("UpdateCampaign","Company")" method="post" enctype="multipart/form-data">
+                            <div class="form-body">
+                                <input type="hidden" name="Id" value="@Model.Id">
+                                <div class="form-group form-md-line-input">
+                                    <label class="col-md-2 control-label" for="form_control_1">Campaign Name</label>
+                                    <div class="col-md-10">
+                                        <input type="text" name="Name" class="form-control" id="form_control_1" value="@Model.Name" required>
+                                        <div class="form-control-focus"> </div>
+                                    </div>
+                                </div>
+                                <div class="form-group form-md-line-input">
+                                    <label class="col-md-2 control-label" for="form_control_1">Campaign Url</label>
+                                    <div class="col-md-10">
+                                        <input type="text" name="Url" class="form-control" id="url" onchange="ValidateUrl()" value="@Model.Url" readonly>
+                                        <div class="form-control-focus"> </div>
+                                    </div>
+                                    <label class="col-md-offset-2 control-label" id="msg" style="color: cornflowerblue;"></label>
+
+                                </div>
+                                <div class="form-actions">
+                                    <div class="row">
+                                        <div class="col-md-offset-2 col-md-10">
+                                            <button type="submit" class="btn blue">Update</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

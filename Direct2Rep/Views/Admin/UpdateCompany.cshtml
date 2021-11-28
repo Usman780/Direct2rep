@@ -1,0 +1,144 @@
+﻿
+@{
+    ViewBag.Title = "UpdateCompany";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@model Direct2Rep.Models.Company
+<div class="page-content-wrapper">
+    <!-- BEGIN CONTENT BODY -->
+    <div class="page-content">
+        <!-- BEGIN PAGE HEAD-->
+        <div class="page-head">
+            <!-- BEGIN PAGE TITLE -->
+            <div class="page-title">
+                <h1>
+                    Dashboard
+                    <small>statistics, charts and reports</small>
+                </h1>
+            </div>
+            <!-- END PAGE TITLE -->
+        </div>
+        <!-- END PAGE HEAD-->
+        <!-- BEGIN PAGE BREADCRUMB -->
+        <ul class="page-breadcrumb breadcrumb">
+            <li>
+                <a href="@Url.Action("Index","Admin")">Home</a>
+                <i class="fa fa-circle"></i>
+            </li>
+            <li>
+                <span class="active">Update Company</span>
+            </li>
+        </ul>
+        <!-- END PAGE BREADCRUMB -->
+        <!-- BEGIN PAGE BASE CONTENT -->
+        <div class="row">
+            <div class="col-md-12">
+                <!-- BEGIN SAMPLE FORM PORTLET-->
+                <div class="portlet light bordered">
+                    <div class="portlet-title">
+                        <div class="caption font-green-haze">
+                            <i class="icon-home font-green-haze"></i>
+                            <span class="caption-subject bold uppercase"> Update Company</span>
+                        </div>
+                        <div class="actions">
+
+                            <a class="btn btn-circle btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title=""> </a>
+                        </div>
+                    </div>
+                    <div class="portlet-body form">
+                        <div class="row">
+                            @if (ViewBag.Message != null)
+                            {
+                                <div class="alert alert-success">
+                                    @ViewBag.Message
+                                </div>
+                            }
+                            @if (ViewBag.Error != null)
+                            {
+                                <div class="alert alert-danger">
+                                    @ViewBag.Error
+                                </div>
+                            }
+                        </div>
+                        <form role="form" class="form-horizontal" action="@Url.Action("PostUpdateCompany","Admin")" method="post" enctype="multipart/form-data">
+                            <div class="form-body">
+                                <input type="hidden" name="Id" value="@Model.Id">
+                                <div class="form-group form-md-line-input">
+                                    <label class="col-md-2 control-label" for="form_control_1">Name</label>
+                                    <div class="col-md-10">
+                                        <input type="text" name="Name" class="form-control" id="form_control_1" value="@Model.Name" required>
+                                        <div class="form-control-focus"> </div>
+                                    </div>
+                                </div>
+                                <div class="form-group form-md-line-input">
+                                    <label class="col-md-2 control-label" for="form_control_1">Website</label>
+                                    <div class="col-md-10">
+                                        <input type="text" name="Website" class="form-control" id="form_control_1" value="@Model.Website" required>
+                                        <div class="form-control-focus"> </div>
+                                    </div>
+                                </div>
+                                <div class="form-group form-md-line-input">
+                                    <label class="col-md-2 control-label" for="form_control_1">Phone</label>
+                                    <div class="col-md-10">
+                                        <input type="text" name="Phone" class="form-control" id="form_control_1" value="@Model.Phone" required>
+                                        <div class="form-control-focus"> </div>
+                                    </div>
+                                </div>
+                                <div class="form-group form-md-line-input">
+                                    <label class="col-md-2 control-label" for="form_control_1">Email</label>
+                                    <div class="col-md-10">
+                                        <input type="email" name="Email" class="form-control" id="form_control_1" value="@Model.Email" required>
+                                        <div class="form-control-focus"> </div>
+                                    </div>
+                                </div>
+                                <div class="form-group form-md-line-input">
+                                    <label class="col-md-2 control-label" for="form_control_1">Password</label>
+                                    <div class="col-md-10">
+                                        <input type="password" name="Password" class="form-control" id="myInput" value="@Model.Password" required>
+                                        <div class="form-control-focus"> </div>
+                                        <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password fa-eye-slash" onclick="myFunction()"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group form-md-line-input">
+                                    <label class="col-md-2 control-label" for="form_control_1">Upload Logo (600x600px max)</label>
+                                    <div class="col-md-10">
+                                        <input type="file" name="Logo" class="form-control" id="form_control_1">
+                                        <div class="form-control-focus"> </div>
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <div class="row">
+                                        <div class="col-md-offset-2 col-md-10">
+                                            <button type="submit" class="btn blue">Update</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function myFunction() {
+        var x = document.getElementById("myInput");
+        if (x.type === "password") {
+            x.type = "text";
+        } else {
+            x.type = "password";
+        }
+    }
+</script>
+<style>
+    .field-icon {
+        float: right;
+        margin-left: -25px;
+        margin-top: -25px;
+        position: relative;
+        z-index: 2;
+    }
+</style>
